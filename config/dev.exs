@@ -3,7 +3,7 @@ import Config
 # Configure your database
 config :sociophe, Sociophe.Repo,
   username: "postgres",
-  password: "postgres",
+  password: "password",
   hostname: "localhost",
   database: "sociophe_dev",
   stacktrace: true,
