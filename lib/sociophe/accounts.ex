@@ -27,6 +27,24 @@ defmodule Sociophe.Accounts do
   end
 
   @doc """
+  Searches for users by login (or login substing)
+
+  ## Examples
+
+      iex> search_users_by_login("fo")
+      [%User{}]
+
+      iex> search_users_by_login("unknown")
+      []
+  """
+  def search_users_by_login(login) when is_binary(login) do
+    match_string = login <> "%"
+    query = from u in User,
+              where: ilike(u.login, ^match_string)
+    Repo.all(query)
+  end
+
+  @doc """
   Gets a user by login and password.
 
   ## Examples

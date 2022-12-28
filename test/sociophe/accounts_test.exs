@@ -17,6 +17,27 @@ defmodule Sociophe.AccountsTest do
     end
   end
 
+  describe "search_users_by_login/1" do
+    test "does not return any users if the login does not match any" do
+      assert length(Accounts.search_users_by_login("unknown")) == 0
+    end
+
+    test "returns list of users if the login matches anything" do
+      user = user_fixture()
+      part_of_login = common_user_prefix()
+      accounts = Accounts.search_users_by_login(part_of_login)
+      assert Enum.member?(accounts, user)
+    end
+
+    test "returns only matching users" do
+      user = user_fixture()
+      user2 = user_fixture()
+      accounts = Accounts.search_users_by_login(user.login)
+      assert Enum.member?(accounts, user)
+      refute Enum.member?(accounts, user2)
+    end
+  end
+
   describe "get_user_by_login_and_password/2" do
     test "does not return the user if the login does not exist" do
       refute Accounts.get_user_by_login_and_password("unknown@example.com", "hello world!")

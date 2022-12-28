@@ -3,8 +3,11 @@ defmodule Sociophe.AccountsFixtures do
   This module defines test helpers for creating
   entities via the `Sociophe.Accounts` context.
   """
+  @users_prefix "user"
 
-  def unique_user_login, do: "user#{System.unique_integer()}"
+  def common_user_prefix, do: @users_prefix
+
+  def unique_user_login, do: "#{@users_prefix}#{System.unique_integer()}"
   def valid_user_password, do: "hello world!"
 
   def valid_user_attributes(attrs \\ %{}) do
