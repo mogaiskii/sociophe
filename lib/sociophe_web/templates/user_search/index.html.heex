@@ -1,0 +1,20 @@
+<h1>Search</h1>
+
+<.form let={f} for={@conn} action={Routes.user_search_path(@conn, :index)} method="get" id="search_user">
+  <%= label f, :login, "User login" %>
+  <%= text_input f, :login, required: true %>
+  <div>
+    <%= submit "Search" %>
+  </div>
+</.form>
+
+
+<%= if @users do %>
+  <h3>Found users</h3>
+
+  <ul>
+    <%= for user <- @users do %>
+      <li><a><%= user.login %></a></li>
+    <% end %>
+  </ul>
+<% end %>

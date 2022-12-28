@@ -75,6 +75,8 @@ defmodule SociopheWeb.Router do
 
     get "/users/settings", UserSettingsController, :edit
     put "/users/settings", UserSettingsController, :update
+
+    get "/users/search", UserSearchController, :index
   end
 
   scope "/", SociopheWeb do

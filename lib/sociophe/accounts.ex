@@ -37,6 +37,7 @@ defmodule Sociophe.Accounts do
       iex> search_users_by_login("unknown")
       []
   """
+  def search_users_by_login(""), do: []
   def search_users_by_login(login) when is_binary(login) do
     match_string = login <> "%"
     query = from u in User,
