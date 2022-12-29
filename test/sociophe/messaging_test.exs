@@ -23,6 +23,20 @@ defmodule Sociophe.MessagingTest do
       assert Messaging.list_dialogue_messages(message.receiver_id, message.sender_id) == [message]
     end
 
+    test "list_dialogues/1 returns related dialogues" do
+      user = user_fixture()
+      corr_1 = user_fixture()
+      corr_2 = user_fixture()
+      message_1 = message_fixture(%{sender_id: user.id, receiver_id: corr_1.id})
+      message_2 = message_fixture(%{receiver_id: user.id, sender_id: corr_2.id})
+      message_3 = message_fixture(%{sender_id: corr_2.id, receiver_id: corr_1.id})
+
+      dialogues = Messaging.list_dialogues(user.id)
+      assert Enum.any?(dialogues, fn x -> x.id == message_1.id end)
+      assert Enum.any?(dialogues, fn x -> x.id == message_2.id end)
+      refute Enum.any?(dialogues, fn x -> x.id == message_3.id end)
+    end
+
     test "get_message!/1 returns the message with given id" do
       message = message_fixture()
       assert Messaging.get_message!(message.id) == message

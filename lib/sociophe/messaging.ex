@@ -7,6 +7,7 @@ defmodule Sociophe.Messaging do
   alias Sociophe.Repo
 
   alias Sociophe.Messaging.Message
+  alias Sociophe.Accounts.User
 
   @doc """
   Returns the list of messages related to the given user.
@@ -26,22 +27,21 @@ defmodule Sociophe.Messaging do
   end
 
   def list_dialogues(user_id) do
-    # select users.id, users.login
-    # from users inner join messages on messages.sender_id = users.id or messages.receiver_id = users.id
-    # where messages.sender_id = ^user_id or messages.receiver_id = ^user_id
+    ranking_query =
+      from m in Message,
+      inner_join: u in User,
+      on: u.id == m.sender_id and m.receiver_id == ^user_id or u.id == m.receiver_id and m.sender_id == ^user_id,
+      select: %{id: m.id, rn: over(row_number(), :messages_partition)},
+      windows: [messages_partition: [partition_by: u.id, order_by: m.id]]
 
-    # with dialogues as (
-    #    select users.id, users.login
-    #    from users inner join messages on messages.sender_id = users.id or messages.receiver_id = users.id
-    #    where messages.sender_id = ^user_id or messages.receiver_id = ^user_id
-    # ),
-    # messages as (
-    #    select messages.text from messages
-    #    where messages.receiver_id = dialogues.id and messages.sender_id = ^user_id
-    #    or messages.sender_id = dialogues.id and messages.receiver_id = ^user_id
-    #    order by inserted at desc
-    #    limit 1
-    # )
+    dialogues_query =
+      from m in Message,
+      join: r in subquery(ranking_query),
+      on: r.id == m.id and r.rn == 1,
+      preload: [:sender, :receiver],
+      order_by: [desc: m.inserted_at]
+
+    Repo.all(dialogues_query)
   end
 
   @doc """
