@@ -1,0 +1,22 @@
+<h1>Listing Messages</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Text</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for message <- @messages do %>
+    <tr>
+      <td><%= message.text %></td>
+
+      <td>
+        <span><%= link "Show", to: Routes.message_path(@conn, :show, message) %></span>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>

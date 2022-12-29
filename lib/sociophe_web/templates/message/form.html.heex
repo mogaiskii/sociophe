@@ -1,0 +1,9 @@
+<.form let={f} for={@changeset} action={@action}>
+  <%= label f, :text %>
+  <%= textarea f, :text %>
+  <%= error_tag f, :text %>
+
+  <div>
+    <%= submit "Send" %>
+  </div>
+</.form>

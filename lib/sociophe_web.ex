@@ -24,6 +24,14 @@ defmodule SociopheWeb do
       import Plug.Conn
       import SociopheWeb.Gettext
       alias SociopheWeb.Router.Helpers, as: Routes
+
+      def not_found(conn) do
+        conn
+        |> put_status(:not_found)
+        |> Phoenix.Controller.put_view(SociopheWeb.ErrorView)
+        |> Phoenix.Controller.render(:"404")
+        |> halt()
+      end
     end
   end
 

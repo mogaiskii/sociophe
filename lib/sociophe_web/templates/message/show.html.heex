@@ -1,0 +1,21 @@
+<h1><%= @correspondent.login %></h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Text</th>
+
+      <th>datetime</th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for message <- @messages do %>
+    <tr>
+      <td><%= message.text %></td>
+      <td><%= message.updated_at %></td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<%= render "form.html", Map.put(assigns, :action, Routes.message_path(@conn, :create, @correspondent.login)) %>

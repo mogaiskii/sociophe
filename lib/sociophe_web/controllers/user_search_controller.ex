@@ -13,11 +13,7 @@ defmodule SociopheWeb.UserSearchController do
   def show(conn, %{"login" => login}) do
     case Accounts.get_user_by_login(login) do
       nil ->
-        conn
-        |> put_status(:not_found)
-        |> Phoenix.Controller.put_view(SociopheWeb.ErrorView)
-        |> Phoenix.Controller.render(:"404")
-        |> halt()
+        not_found(conn)
       user ->
         render(conn, "show.html", user: user)
     end

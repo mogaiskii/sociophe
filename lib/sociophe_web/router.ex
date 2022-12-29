@@ -78,6 +78,10 @@ defmodule SociopheWeb.Router do
 
     get "/users/search", UserSearchController, :index
     get "/users/:login", UserSearchController, :show
+
+    get "/messages", MessageController, :index
+    get "/messages/:login", MessageController, :show
+    post "/messages/:login", MessageController, :create
   end
 
   scope "/", SociopheWeb do
