@@ -14,7 +14,7 @@
 
   <ul>
     <%= for user <- @users do %>
-      <li><a><%= user.login %></a></li>
+      <li><%= link(user.login, to: Routes.user_search_path(@conn, :show, user.login)) %></li>
     <% end %>
   </ul>
 <% end %>
