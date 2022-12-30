@@ -3,6 +3,7 @@ defmodule SociopheWeb.MessageController do
 
   alias Sociophe.{Messaging, Accounts}
   alias Sociophe.Messaging.Message
+  alias SociopheWeb.Endpoint
 
   def index(conn, _params) do
     user = conn.assigns.current_user
@@ -15,6 +16,7 @@ defmodule SociopheWeb.MessageController do
     message_params = %{text: text, sender_id: user.id, receiver_id: corresponding_user.id}
     case Messaging.create_message(message_params) do
       {:ok, _} ->
+        Endpoint.broadcast "user:" <> to_string(corresponding_user.id), "new:msg", %{sender: %{login: user.login, id: user.id}, text: text, updated_at: DateTime.utc_now()}
         conn
         |> put_flash(:info, "Message created successfully.")
         |> redirect(to: Routes.message_path(conn, :show, corresponding_user.login))

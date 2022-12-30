@@ -2,4 +2,23 @@
   <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
   <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>
   <%= @inner_content %>
+
+  <%= if @current_user do %>
+  <script>window.userToken = "<%= assigns[:user_token] %>";</script>
+  <script>window.userId = <%= @current_user.id %>;</script>
+  <% end %>
+
+  <div style="
+  position: fixed;
+  right:  0;
+  bottom:  0;
+  background: lightgrey;
+  padding:  10px;
+  width: 250px;
+" hidden id="message">
+    <div>
+      <h4>Message from <i id="message_user">...</i></h4>
+      <p id="message_text">Lorem ipsum dolor sit amet consectetur adipisicing elit...</p>
+    </div>
+  </div>
 </main>
