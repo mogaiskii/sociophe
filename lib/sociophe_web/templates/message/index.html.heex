@@ -3,18 +3,20 @@
 <table>
   <thead>
     <tr>
+      <th>User</th>
       <th>Text</th>
-
+      <th>dt</th>
       <th></th>
     </tr>
   </thead>
   <tbody>
 <%= for message <- @messages do %>
     <tr>
+      <td><%= correspondent(message, @user).login %></td>
       <td><%= message.text %></td>
-
+      <td><%= message.updated_at %></td>
       <td>
-        <span><%= link "Show", to: Routes.message_path(@conn, :show, message) %></span>
+        <span><%= link "Show", to: Routes.message_path(@conn, :show, correspondent(message, @user).login) %></span>
       </td>
     </tr>
 <% end %>

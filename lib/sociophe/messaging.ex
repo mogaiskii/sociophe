@@ -32,7 +32,7 @@ defmodule Sociophe.Messaging do
       inner_join: u in User,
       on: u.id == m.sender_id and m.receiver_id == ^user_id or u.id == m.receiver_id and m.sender_id == ^user_id,
       select: %{id: m.id, rn: over(row_number(), :messages_partition)},
-      windows: [messages_partition: [partition_by: u.id, order_by: m.id]]
+      windows: [messages_partition: [partition_by: u.id, order_by: [desc: m.id]]]
 
     dialogues_query =
       from m in Message,
@@ -57,6 +57,7 @@ defmodule Sociophe.Messaging do
     query = from m in Message,
               where: m.sender_id == ^user_id and m.receiver_id == ^correspondent_user_id,
               or_where: m.receiver_id == ^user_id and m.sender_id == ^correspondent_user_id,
+              preload: [:sender, :receiver],
               order_by: m.inserted_at
     Repo.all(query)
   end

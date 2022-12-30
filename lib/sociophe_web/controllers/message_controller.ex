@@ -6,8 +6,8 @@ defmodule SociopheWeb.MessageController do
 
   def index(conn, _params) do
     user = conn.assigns.current_user
-    messages = Messaging.list_messages(user.id)
-    render(conn, "index.html", messages: messages)
+    messages = Messaging.list_dialogues(user.id)
+    render(conn, "index.html", user: user, messages: messages)
   end
 
   def create(conn, %{"message" => %{"text" => text}, "login" => login}) do

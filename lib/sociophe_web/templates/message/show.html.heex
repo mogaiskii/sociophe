@@ -3,14 +3,15 @@
 <table>
   <thead>
     <tr>
+      <th>User</th>
       <th>Text</th>
-
       <th>datetime</th>
     </tr>
   </thead>
   <tbody>
 <%= for message <- @messages do %>
     <tr>
+      <td><%= message.sender.login %></td>
       <td><%= message.text %></td>
       <td><%= message.updated_at %></td>
     </tr>
